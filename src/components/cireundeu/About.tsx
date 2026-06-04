@@ -101,6 +101,8 @@ const About = () => {
 
     <SundaDivider />
   </section>
-);
+  );
+};
+
 
 export default About;
