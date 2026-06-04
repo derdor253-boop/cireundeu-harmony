@@ -1,9 +1,10 @@
 import {
   LayoutDashboard,
+  Home,
+  Scroll,
   Package,
   Images,
   Newspaper,
-  Building2,
   Phone,
   BookOpen,
   Settings,
@@ -27,13 +28,14 @@ import { toast } from "sonner";
 
 const items = [
   { title: "Beranda Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
-  { title: "Manajemen Produk", url: "/admin/produk", icon: Package },
-  { title: "Galeri Foto", url: "/admin/galeri", icon: Images },
+  { title: "Kelola Beranda", url: "/admin/beranda", icon: Home },
+  { title: "Kelola Profil & Sejarah", url: "/admin/profil-kampung", icon: Scroll },
+  { title: "Kelola Paket Wisata", url: "/admin/paket", icon: Package },
+  { title: "Kelola Galeri & Visual", url: "/admin/galeri", icon: Images },
   { title: "Artikel & Berita", url: "/admin/artikel", icon: Newspaper },
-  { title: "Profil Kampung", url: "/admin/profil-kampung", icon: Building2 },
   { title: "Kontak & Media Sosial", url: "/admin/kontak", icon: Phone },
   { title: "Buku Saku Admin", url: "/admin/buku-saku", icon: BookOpen },
-  { title: "Pengaturan Website", url: "/admin/pengaturan", icon: Settings },
+  { title: "Pengaturan", url: "/admin/pengaturan", icon: Settings },
 ];
 
 export function AdminSidebar() {
@@ -66,7 +68,7 @@ export function AdminSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu Utama</SidebarGroupLabel>
+          <SidebarGroupLabel>Kelola Konten Website</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => {

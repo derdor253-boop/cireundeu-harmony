@@ -1,5 +1,6 @@
 import { Sprout, Users, AlertTriangle, GraduationCap, Home, Wifi, Stethoscope } from "lucide-react";
 import SundaDivider from "./SundaDivider";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const rules = [
   "Dilarang menggunakan pakaian berwarna merah di area Puncak Salam",
@@ -8,16 +9,27 @@ const rules = [
   "Hormati hukum adat yang berlaku selama berkunjung",
 ];
 
-const AdatProfile = () => (
+const HISTORY_DEFAULT = {
+  title: "Sejarah & Profil Adat Cireundeu",
+  body: "Tradisi mengonsumsi rasi dimulai sejak masa Mama Ali, sebagai bentuk perlawanan terhadap monopoli beras dan komitmen terhadap kemandirian pangan. Hingga kini nilai-nilai itu terus dijaga.",
+};
+
+const AdatProfile = () => {
+  const { data: history } = useSiteContent("history", HISTORY_DEFAULT);
+  return (
   <section id="profil-adat" className="py-20 md:py-28 bg-warm-gradient">
     <div className="container mx-auto">
       <div className="text-center max-w-2xl mx-auto">
         <span className="text-xs tracking-[0.25em] uppercase text-terracotta font-semibold">
           Profil Adat
         </span>
-        <h2 className="mt-3 text-3xl md:text-4xl text-forest">Kepercayaan & Tata Kelola</h2>
+        <h2 className="mt-3 text-3xl md:text-4xl text-forest">{history.title}</h2>
         <div className="mt-3 mx-auto h-1 w-20 bg-gold rounded-full" />
+        <p className="mt-6 text-foreground/80 leading-relaxed whitespace-pre-line text-left md:text-center">
+          {history.body}
+        </p>
       </div>
+
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         <article className="rounded-2xl bg-card border border-border p-7 shadow-card">
@@ -118,6 +130,8 @@ const AdatProfile = () => (
     </div>
     <SundaDivider />
   </section>
-);
+  );
+};
+
 
 export default AdatProfile;
