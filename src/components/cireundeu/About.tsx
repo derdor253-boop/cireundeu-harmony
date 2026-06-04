@@ -4,6 +4,7 @@ import salamImg from "@/assets/photos/salam.png";
 import homestayImg from "@/assets/photos/homestay.png";
 import hamparanImg from "@/assets/photos/hamparan-singkong.png";
 import upacaraImg from "@/assets/photos/upacara-adat.png";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const gallery = [
   { src: salamImg, alt: "Jalur menuju Puncak Salam" },
@@ -12,7 +13,15 @@ const gallery = [
   { src: upacaraImg, alt: "Upacara adat warga Cireundeu" },
 ];
 
-const About = () => (
+const DEFAULTS = {
+  title: "Mengenal Kampung Adat Cireundeu",
+  body:
+    "Nama Cireundeu berasal dari pohon reundeu, tanaman herbal yang dahulu banyak tumbuh di lembah ini dan dipakai sebagai obat tradisional. Masyarakat memegang teguh ajaran leluhur yang menekankan keselarasan hidup dengan alam.",
+};
+
+const About = () => {
+  const { data } = useSiteContent("about", DEFAULTS);
+  return (
   <section id="tentang" className="py-20 md:py-28">
     <div className="container mx-auto grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
       <div>
@@ -20,24 +29,14 @@ const About = () => (
           Tentang Kami
         </span>
         <h2 className="mt-3 text-3xl md:text-4xl lg:text-5xl text-forest leading-tight font-display">
-          Mengenal Kampung Adat Cireundeu
+          {data.title}
         </h2>
         <div className="mt-4 h-1 w-20 bg-gold rounded-full" />
 
-        <div className="mt-6 space-y-4 text-foreground/85 leading-relaxed">
-          <p>
-            Nama <em>Cireundeu</em> berasal dari pohon <strong>reundeu</strong>, tanaman herbal
-            yang dahulu banyak tumbuh di lembah ini dan dipakai sebagai obat tradisional. Kampung
-            ini berdiri di kaki tiga gunung — <strong>Gunung Cimenteng</strong>, Gunung Jambul,
-            dan Gunung Gajahlangu — kawasan yang dipercaya sakral oleh masyarakat adat.
-          </p>
-          <p>
-            Masyarakat Cireundeu memegang teguh ajaran leluhur yang menekankan keselarasan hidup
-            dengan alam. Filosofi <em>“Ngindung Ka Waktu, Mibapa Ka Jaman”</em> menjadi pegangan:
-            berinduk pada waktu, namun tetap berbapakan zaman — menghormati tradisi sembari
-            merangkul kemajuan.
-          </p>
+        <div className="mt-6 space-y-4 text-foreground/85 leading-relaxed whitespace-pre-line">
+          <p>{data.body}</p>
         </div>
+
 
         <div className="mt-6 flex gap-4 rounded-xl border-l-4 border-terracotta bg-terracotta/10 p-5">
           <Wheat className="h-6 w-6 shrink-0 text-terracotta mt-0.5" />

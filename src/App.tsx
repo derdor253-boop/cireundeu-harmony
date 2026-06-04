@@ -9,6 +9,8 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import ProtectedRoute from "@/components/admin/ProtectedRoute";
 import AdminLogin from "@/pages/admin/Login";
 import AdminDashboard from "@/pages/admin/Dashboard";
+import AdminKelolaBeranda from "@/pages/admin/KelolaBeranda";
+import AdminKelolaPaket from "@/pages/admin/KelolaPaket";
 import AdminProduk from "@/pages/admin/Produk";
 import AdminGaleri from "@/pages/admin/Galeri";
 import AdminArtikel from "@/pages/admin/Artikel";
@@ -16,6 +18,7 @@ import AdminProfilKampung from "@/pages/admin/ProfilKampung";
 import AdminKontak from "@/pages/admin/Kontak";
 import AdminBukuSaku from "@/pages/admin/BukuSaku";
 import AdminPengaturan from "@/pages/admin/Pengaturan";
+
 
 const queryClient = new QueryClient();
 
@@ -37,14 +40,17 @@ const App = () => (
             }
           >
             <Route index element={<AdminDashboard />} />
-            <Route path="produk" element={<AdminProduk />} />
-            <Route path="galeri" element={<AdminGaleri />} />
-            <Route path="artikel" element={<AdminArtikel />} />
+            <Route path="beranda" element={<AdminKelolaBeranda />} />
             <Route path="profil-kampung" element={<AdminProfilKampung />} />
+            <Route path="paket" element={<AdminKelolaPaket />} />
+            <Route path="galeri" element={<AdminGaleri />} />
+            <Route path="produk" element={<AdminProduk />} />
+            <Route path="artikel" element={<AdminArtikel />} />
             <Route path="kontak" element={<AdminKontak />} />
             <Route path="buku-saku" element={<AdminBukuSaku />} />
             <Route path="pengaturan" element={<AdminPengaturan />} />
           </Route>
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
