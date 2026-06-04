@@ -2,12 +2,11 @@ import {
   LayoutDashboard,
   Home,
   Scroll,
-  Package,
-  Images,
-  Newspaper,
+  UtensilsCrossed,
+  MapPin,
   Phone,
+  Users,
   BookOpen,
-  Settings,
   LogOut,
 } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -27,15 +26,14 @@ import { signOutAdmin } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
 
 const items = [
-  { title: "Beranda Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
+  { title: "Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
   { title: "Kelola Beranda", url: "/admin/beranda", icon: Home },
-  { title: "Kelola Profil & Sejarah", url: "/admin/profil-kampung", icon: Scroll },
-  { title: "Kelola Paket Wisata", url: "/admin/paket", icon: Package },
-  { title: "Kelola Galeri & Visual", url: "/admin/galeri", icon: Images },
-  { title: "Artikel & Berita", url: "/admin/artikel", icon: Newspaper },
-  { title: "Kontak & Media Sosial", url: "/admin/kontak", icon: Phone },
+  { title: "Tentang & Sejarah", url: "/admin/profil", icon: Scroll },
+  { title: "Kuliner Khas", url: "/admin/kuliner", icon: UtensilsCrossed },
+  { title: "Wisata & Aktivitas", url: "/admin/wisata", icon: MapPin },
+  { title: "Reservasi & Kontak", url: "/admin/kontak", icon: Phone },
+  { title: "Manajemen Pengguna", url: "/admin/pengguna", icon: Users },
   { title: "Buku Saku Admin", url: "/admin/buku-saku", icon: BookOpen },
-  { title: "Pengaturan", url: "/admin/pengaturan", icon: Settings },
 ];
 
 export function AdminSidebar() {
