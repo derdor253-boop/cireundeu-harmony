@@ -130,6 +130,8 @@ const AdatProfile = () => {
     </div>
     <SundaDivider />
   </section>
-);
+  );
+};
+
 
 export default AdatProfile;
