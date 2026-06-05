@@ -80,6 +80,45 @@ export type Database = {
         }
         Relationships: []
       }
+      media_assets: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          image_url: string | null
+          link_url: string | null
+          name: string
+          slot: string
+          sort_order: number
+          target: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          link_url?: string | null
+          name: string
+          slot: string
+          sort_order?: number
+          target?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          link_url?: string | null
+          name?: string
+          slot?: string
+          sort_order?: number
+          target?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           category: string | null
