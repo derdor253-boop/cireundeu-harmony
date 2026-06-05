@@ -1,12 +1,18 @@
 import {
   LayoutDashboard,
   Home,
+  FileText,
+  MousePointerClick,
+  MessageCircle,
+  Image as ImageIcon,
+  Menu as MenuIcon,
+  Users,
+  Settings as SettingsIcon,
+  BookOpen,
   Scroll,
   UtensilsCrossed,
   MapPin,
   Phone,
-  Users,
-  BookOpen,
   LogOut,
 } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -25,14 +31,26 @@ import {
 import { signOutAdmin } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
 
-const items = [
+const cmsItems = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
   { title: "Kelola Beranda", url: "/admin/beranda", icon: Home },
-  { title: "Tentang & Sejarah", url: "/admin/profil", icon: Scroll },
+  { title: "Konten Halaman", url: "/admin/konten", icon: FileText },
+  { title: "Tombol & Link", url: "/admin/tombol-link", icon: MousePointerClick },
+  { title: "WhatsApp", url: "/admin/whatsapp", icon: MessageCircle },
+  { title: "Logo & Media", url: "/admin/logo-media", icon: ImageIcon },
+  { title: "Navigasi", url: "/admin/navigasi", icon: MenuIcon },
+];
+
+const dataItems = [
+  { title: "Profil & Sejarah", url: "/admin/profil", icon: Scroll },
   { title: "Kuliner Khas", url: "/admin/kuliner", icon: UtensilsCrossed },
-  { title: "Wisata & Aktivitas", url: "/admin/wisata", icon: MapPin },
+  { title: "Wisata & Paket", url: "/admin/wisata", icon: MapPin },
   { title: "Reservasi & Kontak", url: "/admin/kontak", icon: Phone },
-  { title: "Manajemen Pengguna", url: "/admin/pengguna", icon: Users },
+];
+
+const sysItems = [
+  { title: "Pengguna", url: "/admin/pengguna", icon: Users },
+  { title: "Pengaturan", url: "/admin/pengaturan", icon: SettingsIcon },
   { title: "Buku Saku Admin", url: "/admin/buku-saku", icon: BookOpen },
 ];
 
@@ -47,6 +65,23 @@ export function AdminSidebar() {
     toast.success("Berhasil keluar dari dasbor");
     navigate("/admin/login");
   };
+
+  const renderItems = (items: typeof cmsItems) =>
+    items.map((item) => {
+      const active = item.end
+        ? pathname === item.url
+        : pathname === item.url || pathname.startsWith(item.url + "/");
+      return (
+        <SidebarMenuItem key={item.url}>
+          <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
+            <NavLink to={item.url} end={item.end}>
+              <item.icon className="h-4 w-4" />
+              <span>{item.title}</span>
+            </NavLink>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      );
+    });
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
@@ -66,25 +101,23 @@ export function AdminSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Kelola Konten Website</SidebarGroupLabel>
+          <SidebarGroupLabel>CMS Website</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => {
-                const active = item.end
-                  ? pathname === item.url
-                  : pathname === item.url || pathname.startsWith(item.url + "/");
-                return (
-                  <SidebarMenuItem key={item.url}>
-                    <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
-                      <NavLink to={item.url} end={item.end}>
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
+            <SidebarMenu>{renderItems(cmsItems)}</SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Data & Konten</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>{renderItems(dataItems)}</SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Sistem</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>{renderItems(sysItems)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
