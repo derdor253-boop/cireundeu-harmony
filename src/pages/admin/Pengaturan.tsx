@@ -1,107 +1,139 @@
-import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import PageHeader from "@/components/admin/PageHeader";
+import ContentForm from "@/components/admin/ContentForm";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import PageHeader from "@/components/admin/PageHeader";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
-import { KeyRound, User } from "lucide-react";
+import { KeyRound } from "lucide-react";
+
+type GlobalData = {
+  site_name: string;
+  tagline: string;
+  meta_title: string;
+  meta_description: string;
+  favicon_url: string;
+  logo_url: string;
+};
+
+type FooterData = {
+  tagline: string;
+  copyright: string;
+  footnote: string;
+};
 
 export default function PengaturanPage() {
-  const { user, fullName } = useAdminAuth();
-  const [name, setName] = useState(fullName);
+  const { user } = useAdminAuth();
   const [pwd, setPwd] = useState("");
-  const [savingName, setSavingName] = useState(false);
   const [savingPwd, setSavingPwd] = useState(false);
-
-  const saveName = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) return;
-    setSavingName(true);
-    const { error } = await supabase.from("profiles").update({ full_name: name }).eq("id", user.id);
-    setSavingName(false);
-    if (error) toast.error("Gagal menyimpan");
-    else toast.success("Nama berhasil diperbarui");
-  };
 
   const savePwd = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pwd.length < 8) {
-      toast.error("Kata sandi minimal 8 karakter");
-      return;
-    }
+    if (pwd.length < 8) return toast.error("Kata sandi minimal 8 karakter");
     setSavingPwd(true);
     const { error } = await supabase.auth.updateUser({ password: pwd });
     setSavingPwd(false);
     if (error) toast.error(error.message);
-    else {
-      toast.success("Kata sandi diperbarui");
-      setPwd("");
-    }
+    else { toast.success("Kata sandi diperbarui"); setPwd(""); }
   };
-
-  const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <PageHeader title="Pengaturan Website" description="Kelola akun admin dan informasi dasar website." />
+      <PageHeader
+        title="Pengaturan Website"
+        description="Kelola identitas website, meta SEO, footer, dan akun admin."
+      />
 
-      <Card className="border-border shadow-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base"><User className="h-4 w-4" /> Profil Saya</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={saveName} className="space-y-4">
-            <div className="space-y-1.5">
+      <Card className="border-border">
+        <CardContent className="pt-6">
+          <h3 className="font-display text-base mb-4 text-forest">Identitas & SEO</h3>
+          <ContentForm<GlobalData>
+            contentKey="global_settings"
+            defaults={{ site_name: "", tagline: "", meta_title: "", meta_description: "", favicon_url: "", logo_url: "" }}
+            render={(d, set) => (
+              <div className="space-y-4">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <Label>Nama Website</Label>
+                    <Input value={d.site_name} onChange={(e) => set("site_name", e.target.value)} />
+                  </div>
+                  <div>
+                    <Label>Tagline</Label>
+                    <Input value={d.tagline} onChange={(e) => set("tagline", e.target.value)} />
+                  </div>
+                </div>
+                <div>
+                  <Label>Meta Title (untuk Google)</Label>
+                  <Input value={d.meta_title} onChange={(e) => set("meta_title", e.target.value)} />
+                </div>
+                <div>
+                  <Label>Meta Description</Label>
+                  <Textarea rows={2} value={d.meta_description} onChange={(e) => set("meta_description", e.target.value)} />
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <Label>URL Favicon</Label>
+                    <Input value={d.favicon_url} onChange={(e) => set("favicon_url", e.target.value)} />
+                  </div>
+                  <div>
+                    <Label>URL Logo Utama</Label>
+                    <Input value={d.logo_url} onChange={(e) => set("logo_url", e.target.value)} />
+                  </div>
+                </div>
+              </div>
+            )}
+          />
+        </CardContent>
+      </Card>
+
+      <Card className="border-border">
+        <CardContent className="pt-6">
+          <h3 className="font-display text-base mb-4 text-forest">Footer</h3>
+          <ContentForm<FooterData>
+            contentKey="footer"
+            defaults={{ tagline: "", copyright: "", footnote: "" }}
+            render={(d, set) => (
+              <div className="space-y-4">
+                <div>
+                  <Label>Tagline Footer</Label>
+                  <Textarea rows={2} value={d.tagline} onChange={(e) => set("tagline", e.target.value)} />
+                </div>
+                <div>
+                  <Label>Copyright</Label>
+                  <Input value={d.copyright} onChange={(e) => set("copyright", e.target.value)} />
+                </div>
+                <div>
+                  <Label>Catatan kaki</Label>
+                  <Input value={d.footnote} onChange={(e) => set("footnote", e.target.value)} />
+                </div>
+              </div>
+            )}
+          />
+        </CardContent>
+      </Card>
+
+      <Card className="border-border">
+        <CardContent className="pt-6">
+          <h3 className="font-display text-base mb-4 text-forest flex items-center gap-2">
+            <KeyRound className="h-4 w-4" /> Ubah Kata Sandi
+          </h3>
+          <form onSubmit={savePwd} className="space-y-3">
+            <div>
               <Label>Email</Label>
               <Input value={user?.email ?? ""} disabled />
             </div>
-            <div className="space-y-1.5">
-              <Label>Nama Lengkap</Label>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <Button type="submit" disabled={savingName} className="bg-forest hover:bg-forest-light">
-              {savingName ? "Menyimpan…" : "Simpan"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-
-      <Card className="border-border shadow-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base"><KeyRound className="h-4 w-4" /> Ubah Kata Sandi</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={savePwd} className="space-y-4">
-            <div className="space-y-1.5">
+            <div>
               <Label>Kata Sandi Baru</Label>
-              <Input
-                type="password"
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                minLength={8}
-                placeholder="Minimal 8 karakter"
-              />
+              <Input type="password" value={pwd} onChange={(e) => setPwd(e.target.value)} minLength={8} placeholder="Minimal 8 karakter" />
             </div>
-            <Button type="submit" disabled={savingPwd} className="bg-forest hover:bg-forest-light">
+            <Button type="submit" disabled={savingPwd} className="bg-forest hover:bg-forest-light text-cream">
               {savingPwd ? "Menyimpan…" : "Perbarui Kata Sandi"}
             </Button>
           </form>
-        </CardContent>
-      </Card>
-
-      <Card className="border-border bg-muted/40">
-        <CardHeader>
-          <CardTitle className="text-base">Informasi Website</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-1 text-sm">
-          <p><span className="text-muted-foreground">Domain:</span> {domain}</p>
-          <p><span className="text-muted-foreground">Status:</span> Aktif</p>
-          <p className="text-xs text-muted-foreground">
-            Untuk mengganti domain, hubungi pengelola teknis website.
-          </p>
         </CardContent>
       </Card>
     </div>

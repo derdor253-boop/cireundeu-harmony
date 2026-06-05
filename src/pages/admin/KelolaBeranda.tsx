@@ -1,90 +1,91 @@
-import { useEffect, useState } from "react";
-import { Save } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
+import PageHeader from "@/components/admin/PageHeader";
+import ContentForm from "@/components/admin/ContentForm";
+import ImageUpload from "@/components/admin/ImageUpload";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import PageHeader from "@/components/admin/PageHeader";
-import ImageUpload from "@/components/admin/ImageUpload";
-import { toast } from "sonner";
 
-type HeroData = { headline: string; subheadline: string; hero_image_url: string };
+type HeroData = {
+  headline: string;
+  subheadline: string;
+  badge_text: string;
+  hero_image_url: string;
+  cta_primary_label: string;
+  cta_primary_href: string;
+  cta_secondary_label: string;
+  cta_secondary_href: string;
+};
 
-const empty: HeroData = { headline: "", subheadline: "", hero_image_url: "" };
+const empty: HeroData = {
+  headline: "",
+  subheadline: "",
+  badge_text: "",
+  hero_image_url: "",
+  cta_primary_label: "Jelajahi Kampung",
+  cta_primary_href: "#wisata",
+  cta_secondary_label: "Reservasi Kunjungan",
+  cta_secondary_href: "#kontak",
+};
 
 export default function KelolaBeranda() {
-  const [form, setForm] = useState<HeroData>(empty);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await supabase
-        .from("site_content")
-        .select("data")
-        .eq("key", "hero")
-        .maybeSingle();
-      if (data?.data) setForm({ ...empty, ...(data.data as HeroData) });
-      setLoading(false);
-    })();
-  }, []);
-
-  const save = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    const { error } = await supabase
-      .from("site_content")
-      .upsert({ key: "hero", data: form as any }, { onConflict: "key" });
-    setSaving(false);
-    if (error) toast.error("Gagal menyimpan: " + error.message);
-    else toast.success("Beranda berhasil diperbarui. Halaman publik akan otomatis menampilkan perubahan.");
-  };
-
-  if (loading) return <p className="p-6 text-muted-foreground">Memuat…</p>;
-
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl space-y-6">
       <PageHeader
         title="Kelola Beranda"
-        description="Atur teks utama (headline) dan gambar latar di bagian Hero halaman depan."
+        description="Atur headline, sub-headline, badge, tombol CTA, dan gambar latar bagian Hero."
       />
       <Card className="border-border shadow-card">
-        <CardContent className="p-6">
-          <form onSubmit={save} className="space-y-5">
-            <div className="space-y-1.5">
-              <Label>Headline (Wilujeng Sumping…)</Label>
-              <Input
-                value={form.headline}
-                onChange={(e) => setForm({ ...form, headline: e.target.value })}
-                placeholder="Wilujeng Sumping di Kampung Adat Cireundeu"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Sub-headline</Label>
-              <Textarea
-                rows={3}
-                value={form.subheadline}
-                onChange={(e) => setForm({ ...form, subheadline: e.target.value })}
-                placeholder="1–2 kalimat yang menggambarkan kampung"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Gambar Latar Hero (opsional)</Label>
-              <ImageUpload
-                value={form.hero_image_url || null}
-                onChange={(p) => setForm({ ...form, hero_image_url: p ?? "" })}
-                folder="hero"
-              />
-              <p className="text-xs text-muted-foreground">
-                Kosongkan jika ingin tetap memakai gambar latar default.
-              </p>
-            </div>
-            <Button type="submit" disabled={saving} className="bg-forest hover:bg-forest-light">
-              <Save className="h-4 w-4" /> {saving ? "Menyimpan…" : "Simpan Perubahan"}
-            </Button>
-          </form>
+        <CardContent className="pt-6">
+          <ContentForm<HeroData>
+            contentKey="hero"
+            defaults={empty}
+            render={(d, set) => (
+              <div className="space-y-4">
+                <div>
+                  <Label>Badge (teks kecil di atas headline)</Label>
+                  <Input value={d.badge_text} onChange={(e) => set("badge_text", e.target.value)} />
+                </div>
+                <div>
+                  <Label>Headline</Label>
+                  <Input value={d.headline} onChange={(e) => set("headline", e.target.value)} />
+                </div>
+                <div>
+                  <Label>Sub-headline</Label>
+                  <Textarea rows={3} value={d.subheadline} onChange={(e) => set("subheadline", e.target.value)} />
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <Label>Tombol Utama — Label</Label>
+                    <Input value={d.cta_primary_label} onChange={(e) => set("cta_primary_label", e.target.value)} />
+                  </div>
+                  <div>
+                    <Label>Tombol Utama — Tujuan</Label>
+                    <Input value={d.cta_primary_href} onChange={(e) => set("cta_primary_href", e.target.value)} />
+                  </div>
+                  <div>
+                    <Label>Tombol Sekunder — Label</Label>
+                    <Input value={d.cta_secondary_label} onChange={(e) => set("cta_secondary_label", e.target.value)} />
+                  </div>
+                  <div>
+                    <Label>Tombol Sekunder — Tujuan</Label>
+                    <Input value={d.cta_secondary_href} onChange={(e) => set("cta_secondary_href", e.target.value)} />
+                  </div>
+                </div>
+                <div>
+                  <Label>Gambar Latar Hero (opsional)</Label>
+                  <ImageUpload
+                    value={d.hero_image_url || null}
+                    onChange={(p) => set("hero_image_url", p ?? "")}
+                    folder="hero"
+                  />
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Kosongkan untuk pakai gambar latar default.
+                  </p>
+                </div>
+              </div>
+            )}
+          />
         </CardContent>
       </Card>
     </div>
