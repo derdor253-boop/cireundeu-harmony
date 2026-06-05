@@ -65,10 +65,10 @@ const ContactReservation = () => {
 
     // Open WhatsApp directly so the team gets the reservation
     const v = parsed.data;
-    const msg = `Reservasi Cireundeu:%0A• Nama: ${v.nama}%0A• Institusi: ${v.institusi}%0A• Jumlah: ${v.jumlah}%0A• Tanggal: ${v.tanggal}%0A• Paket: ${v.paket}%0A• WA: ${v.whatsapp}%0A• Pesan: ${v.pesan || "-"}`;
+    const msg = `Reservasi Cireundeu:\n• Nama: ${v.nama}\n• Institusi: ${v.institusi}\n• Jumlah: ${v.jumlah}\n• Tanggal: ${v.tanggal}\n• Paket: ${v.paket}\n• WA: ${v.whatsapp}\n• Pesan: ${v.pesan || "-"}`;
     if (wa.enabled) {
-      const url = `${wa.buildLink("reservation")}${wa.buildLink("reservation").includes("?") ? "&" : "?"}text=${msg}`;
-      window.open(`https://wa.me/${wa.number.replace(/\D/g, "")}?text=${msg}`, "_blank");
+      const num = (wa.number || "").replace(/\D/g, "");
+      window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, "_blank");
     }
     setTimeout(() => {
       setSubmitting(false);
