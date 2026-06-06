@@ -25,6 +25,7 @@ import AdminTombolLink from "@/pages/admin/TombolLink";
 import AdminWhatsapp from "@/pages/admin/Whatsapp";
 import AdminLogoMedia from "@/pages/admin/LogoMedia";
 import AdminNavigasi from "@/pages/admin/Navigasi";
+import AdminJejakWaktu from "@/pages/admin/JejakWaktu";
 
 if (typeof window !== "undefined") {
   const p = window.location.pathname;
@@ -56,6 +57,7 @@ const App = () => (
               <Route index element={<AdminDashboard />} />
               <Route path="beranda" element={<AdminKelolaBeranda />} />
               <Route path="konten" element={<AdminKonten />} />
+              <Route path="jejak-waktu" element={<AdminJejakWaktu />} />
               <Route path="tombol-link" element={<AdminTombolLink />} />
               <Route path="whatsapp" element={<AdminWhatsapp />} />
               <Route path="logo-media" element={<AdminLogoMedia />} />
