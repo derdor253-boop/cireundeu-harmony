@@ -40,9 +40,11 @@ export default function Dashboard() {
     typeof window !== "undefined" ? window.location.hostname : "cireundeu.lovable.app";
 
   const shortcuts = [
-    { to: "/admin/produk", label: "Tambah Produk", desc: "Daftarkan produk UMKM baru" },
-    { to: "/admin/galeri", label: "Unggah Foto", desc: "Tambahkan dokumentasi visual" },
-    { to: "/admin/artikel", label: "Tulis Artikel", desc: "Bagikan cerita & kegiatan" },
+    { to: "/admin/beranda", label: "Edit Beranda", desc: "Ubah headline & hero halaman utama" },
+    { to: "/admin/kuliner", label: "Kelola Kuliner", desc: "Tambah/ubah kuliner khas" },
+    { to: "/admin/wisata", label: "Kelola Paket Wisata", desc: "Atur paket & harga kunjungan" },
+    { to: "/admin/galeri", label: "Unggah Foto Galeri", desc: "Tambahkan dokumentasi visual" },
+    { to: "/admin/whatsapp", label: "Atur WhatsApp", desc: "Nomor & template pesan" },
     { to: "/admin/buku-saku", label: "Buku Saku Admin", desc: "Panduan penggunaan dasbor" },
   ];
 

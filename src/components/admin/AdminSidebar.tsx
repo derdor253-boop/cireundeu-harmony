@@ -1,18 +1,20 @@
 import {
   LayoutDashboard,
   Home,
-  FileText,
-  MousePointerClick,
-  MessageCircle,
-  Image as ImageIcon,
-  Menu as MenuIcon,
-  Users,
-  Settings as SettingsIcon,
-  BookOpen,
-  Scroll,
+  Info,
+  Clock,
+  Sprout,
   UtensilsCrossed,
   MapPin,
   Phone,
+  Images,
+  MessageCircle,
+  Image as ImageIcon,
+  Menu as MenuIcon,
+  MousePointerClick,
+  Users,
+  Settings as SettingsIcon,
+  BookOpen,
   LogOut,
 } from "lucide-react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -31,21 +33,27 @@ import {
 import { signOutAdmin } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
 
-const cmsItems = [
+// Mengikuti navbar publik
+const navbarItems = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
-  { title: "Kelola Beranda", url: "/admin/beranda", icon: Home },
-  { title: "Konten Halaman", url: "/admin/konten", icon: FileText },
-  { title: "Tombol & Link", url: "/admin/tombol-link", icon: MousePointerClick },
-  { title: "WhatsApp", url: "/admin/whatsapp", icon: MessageCircle },
-  { title: "Logo & Media", url: "/admin/logo-media", icon: ImageIcon },
-  { title: "Navigasi", url: "/admin/navigasi", icon: MenuIcon },
+  { title: "Beranda", url: "/admin/beranda", icon: Home },
+  { title: "Tentang Kami", url: "/admin/konten", icon: Info },
+  { title: "Jejak Waktu", url: "/admin/jejak-waktu", icon: Clock },
+  { title: "Kepercayaan & Tata Kelola", url: "/admin/profil", icon: Sprout },
+  { title: "Kuliner Khas", url: "/admin/kuliner", icon: UtensilsCrossed },
+  { title: "Wisata & Aktivitas", url: "/admin/wisata", icon: MapPin },
+  { title: "Reservasi & Kontak", url: "/admin/kontak", icon: Phone },
 ];
 
-const dataItems = [
-  { title: "Profil & Sejarah", url: "/admin/profil", icon: Scroll },
-  { title: "Kuliner Khas", url: "/admin/kuliner", icon: UtensilsCrossed },
-  { title: "Wisata & Paket", url: "/admin/wisata", icon: MapPin },
-  { title: "Reservasi & Kontak", url: "/admin/kontak", icon: Phone },
+const mediaItems = [
+  { title: "Katalog Visual", url: "/admin/galeri", icon: Images },
+  { title: "Logo & Mitra", url: "/admin/logo-media", icon: ImageIcon },
+];
+
+const cmsItems = [
+  { title: "WhatsApp", url: "/admin/whatsapp", icon: MessageCircle },
+  { title: "Tombol & Link", url: "/admin/tombol-link", icon: MousePointerClick },
+  { title: "Navigasi", url: "/admin/navigasi", icon: MenuIcon },
 ];
 
 const sysItems = [
@@ -66,7 +74,7 @@ export function AdminSidebar() {
     navigate("/admin/login");
   };
 
-  const renderItems = (items: typeof cmsItems) =>
+  const renderItems = (items: typeof navbarItems) =>
     items.map((item) => {
       const active = item.end
         ? pathname === item.url
@@ -101,16 +109,23 @@ export function AdminSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>CMS Website</SidebarGroupLabel>
+          <SidebarGroupLabel>Halaman Website</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>{renderItems(cmsItems)}</SidebarMenu>
+            <SidebarMenu>{renderItems(navbarItems)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Data & Konten</SidebarGroupLabel>
+          <SidebarGroupLabel>Media & Galeri</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>{renderItems(dataItems)}</SidebarMenu>
+            <SidebarMenu>{renderItems(mediaItems)}</SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Konfigurasi</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>{renderItems(cmsItems)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
