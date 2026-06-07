@@ -33,20 +33,20 @@ import {
 import { signOutAdmin } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
 
-// Mengikuti navbar publik
+// Mengikuti urutan header publik
 const navbarItems = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
   { title: "Beranda", url: "/admin/beranda", icon: Home },
-  { title: "Tentang Kami", url: "/admin/konten", icon: Info },
+  { title: "Profil & Sejarah", url: "/admin/konten", icon: Info },
   { title: "Jejak Waktu", url: "/admin/jejak-waktu", icon: Clock },
   { title: "Kepercayaan & Tata Kelola", url: "/admin/profil", icon: Sprout },
+  { title: "Katalog Visual", url: "/admin/galeri", icon: Images },
   { title: "Kuliner Khas", url: "/admin/kuliner", icon: UtensilsCrossed },
   { title: "Wisata & Aktivitas", url: "/admin/wisata", icon: MapPin },
   { title: "Reservasi & Kontak", url: "/admin/kontak", icon: Phone },
 ];
 
 const mediaItems = [
-  { title: "Katalog Visual", url: "/admin/galeri", icon: Images },
   { title: "Logo & Mitra", url: "/admin/logo-media", icon: ImageIcon },
 ];
 

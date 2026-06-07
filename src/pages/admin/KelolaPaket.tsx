@@ -17,7 +17,21 @@ import {
 } from "@/components/ui/dialog";
 import PageHeader from "@/components/admin/PageHeader";
 import ConfirmDeleteDialog from "@/components/admin/ConfirmDeleteDialog";
+import ImageUpload from "@/components/admin/ImageUpload";
+import { getSignedUrl } from "@/lib/storage";
 import { toast } from "sonner";
+
+function PkgImage({ path, alt }: { path: string; alt: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    getSignedUrl(path).then(setUrl);
+  }, [path]);
+  return (
+    <div className="aspect-video w-full bg-muted">
+      {url && <img src={url} alt={alt} className="h-full w-full object-cover" />}
+    </div>
+  );
+}
 
 type Pkg = {
   id: string;
@@ -28,6 +42,7 @@ type Pkg = {
   features: string[];
   sort_order: number;
   active: boolean;
+  image_url: string | null;
 };
 
 const empty = {
@@ -38,6 +53,7 @@ const empty = {
   featuresText: "",
   sort_order: 0,
   active: true,
+  image_url: "",
 };
 
 export default function KelolaPaket() {
@@ -64,6 +80,13 @@ export default function KelolaPaket() {
 
   useEffect(() => {
     load();
+    const ch = supabase
+      .channel("tour_packages_admin")
+      .on("postgres_changes", { event: "*", schema: "public", table: "tour_packages" }, () => load())
+      .subscribe();
+    return () => {
+      supabase.removeChannel(ch);
+    };
   }, []);
 
   const openCreate = () => {
@@ -81,6 +104,7 @@ export default function KelolaPaket() {
       featuresText: p.features.join("\n"),
       sort_order: p.sort_order,
       active: p.active,
+      image_url: p.image_url ?? "",
     });
     setOpen(true);
   };
@@ -103,6 +127,7 @@ export default function KelolaPaket() {
       features: features as any,
       sort_order: form.sort_order,
       active: form.active,
+      image_url: form.image_url || null,
     };
     const { error } = editing
       ? await supabase.from("tour_packages").update(payload).eq("id", editing.id)
@@ -147,7 +172,8 @@ export default function KelolaPaket() {
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {list.map((p) => (
-            <Card key={p.id} className="border-border shadow-card">
+            <Card key={p.id} className="overflow-hidden border-border shadow-card">
+              {p.image_url && <PkgImage path={p.image_url} alt={p.name} />}
               <CardContent className="space-y-3 p-5">
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -268,7 +294,15 @@ export default function KelolaPaket() {
           </form>
         </DialogContent>
       </Dialog>
-
+            <div className="space-y-1.5">
+              <Label>Foto Paket / Aktivitas</Label>
+              <ImageUpload
+                value={form.image_url || null}
+                onChange={(p) => setForm({ ...form, image_url: p ?? "" })}
+                folder="wisata"
+              />
+            </div>
+            
       <ConfirmDeleteDialog
         open={!!toDelete}
         onOpenChange={(o) => !o && setToDelete(null)}

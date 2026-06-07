@@ -265,6 +265,7 @@ export type Database = {
           duration: string | null
           features: Json
           id: string
+          image_url: string | null
           name: string
           price: string | null
           sort_order: number
@@ -277,6 +278,7 @@ export type Database = {
           duration?: string | null
           features?: Json
           id?: string
+          image_url?: string | null
           name: string
           price?: string | null
           sort_order?: number
@@ -289,6 +291,7 @@ export type Database = {
           duration?: string | null
           features?: Json
           id?: string
+          image_url?: string | null
           name?: string
           price?: string | null
           sort_order?: number
