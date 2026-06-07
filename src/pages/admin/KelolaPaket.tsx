@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/dialog";
 import PageHeader from "@/components/admin/PageHeader";
 import ConfirmDeleteDialog from "@/components/admin/ConfirmDeleteDialog";
+import ImageUpload from "@/components/admin/ImageUpload";
+import { getSignedUrl } from "@/lib/storage";
 import { toast } from "sonner";
 
 type Pkg = {
@@ -28,6 +30,7 @@ type Pkg = {
   features: string[];
   sort_order: number;
   active: boolean;
+  image_url: string | null;
 };
 
 const empty = {
@@ -38,6 +41,7 @@ const empty = {
   featuresText: "",
   sort_order: 0,
   active: true,
+  image_url: "",
 };
 
 export default function KelolaPaket() {
@@ -64,6 +68,13 @@ export default function KelolaPaket() {
 
   useEffect(() => {
     load();
+    const ch = supabase
+      .channel("tour_packages_admin")
+      .on("postgres_changes", { event: "*", schema: "public", table: "tour_packages" }, () => load())
+      .subscribe();
+    return () => {
+      supabase.removeChannel(ch);
+    };
   }, []);
 
   const openCreate = () => {
@@ -81,6 +92,7 @@ export default function KelolaPaket() {
       featuresText: p.features.join("\n"),
       sort_order: p.sort_order,
       active: p.active,
+      image_url: p.image_url ?? "",
     });
     setOpen(true);
   };
@@ -103,6 +115,7 @@ export default function KelolaPaket() {
       features: features as any,
       sort_order: form.sort_order,
       active: form.active,
+      image_url: form.image_url || null,
     };
     const { error } = editing
       ? await supabase.from("tour_packages").update(payload).eq("id", editing.id)
