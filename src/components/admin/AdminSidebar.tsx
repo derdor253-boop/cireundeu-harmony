@@ -47,7 +47,6 @@ const navbarItems = [
 ];
 
 const mediaItems = [
-  { title: "Katalog Visual", url: "/admin/galeri", icon: Images },
   { title: "Logo & Mitra", url: "/admin/logo-media", icon: ImageIcon },
 ];
 
