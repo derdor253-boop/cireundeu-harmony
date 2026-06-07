@@ -258,6 +258,14 @@ export default function KelolaPaket() {
               />
             </div>
             <div className="space-y-1.5">
+              <Label>Foto Paket / Aktivitas</Label>
+              <ImageUpload
+                value={form.image_url || null}
+                onChange={(p) => setForm({ ...form, image_url: p ?? "" })}
+                folder="wisata"
+              />
+            </div>
+            <div className="space-y-1.5">
               <Label>Daftar Fasilitas (satu per baris)</Label>
               <Textarea
                 rows={5}
@@ -294,15 +302,7 @@ export default function KelolaPaket() {
           </form>
         </DialogContent>
       </Dialog>
-            <div className="space-y-1.5">
-              <Label>Foto Paket / Aktivitas</Label>
-              <ImageUpload
-                value={form.image_url || null}
-                onChange={(p) => setForm({ ...form, image_url: p ?? "" })}
-                folder="wisata"
-              />
-            </div>
-            
+
       <ConfirmDeleteDialog
         open={!!toDelete}
         onOpenChange={(o) => !o && setToDelete(null)}
