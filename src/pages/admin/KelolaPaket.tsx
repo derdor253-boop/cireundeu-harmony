@@ -21,6 +21,18 @@ import ImageUpload from "@/components/admin/ImageUpload";
 import { getSignedUrl } from "@/lib/storage";
 import { toast } from "sonner";
 
+function PkgImage({ path, alt }: { path: string; alt: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    getSignedUrl(path).then(setUrl);
+  }, [path]);
+  return (
+    <div className="aspect-video w-full bg-muted">
+      {url && <img src={url} alt={alt} className="h-full w-full object-cover" />}
+    </div>
+  );
+}
+
 type Pkg = {
   id: string;
   name: string;
