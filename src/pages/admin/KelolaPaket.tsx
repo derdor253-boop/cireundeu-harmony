@@ -160,7 +160,8 @@ export default function KelolaPaket() {
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {list.map((p) => (
-            <Card key={p.id} className="border-border shadow-card">
+            <Card key={p.id} className="overflow-hidden border-border shadow-card">
+              {p.image_url && <PkgImage path={p.image_url} alt={p.name} />}
               <CardContent className="space-y-3 p-5">
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -281,7 +282,15 @@ export default function KelolaPaket() {
           </form>
         </DialogContent>
       </Dialog>
-
+            <div className="space-y-1.5">
+              <Label>Foto Paket / Aktivitas</Label>
+              <ImageUpload
+                value={form.image_url || null}
+                onChange={(p) => setForm({ ...form, image_url: p ?? "" })}
+                folder="wisata"
+              />
+            </div>
+            
       <ConfirmDeleteDialog
         open={!!toDelete}
         onOpenChange={(o) => !o && setToDelete(null)}
