@@ -40,7 +40,9 @@ export default function AdminLogin() {
         });
         if (rpcErr) throw rpcErr;
         if (!valid) {
-          throw new Error("Kode Pendaftaran tidak valid. Hubungi admin utama untuk meminta kode resmi.");
+          throw new Error(
+            "Kode Pendaftaran tidak valid. Hubungi admin utama untuk meminta kode resmi.",
+          );
         }
         const { error } = await supabase.auth.signUp({
           email,
@@ -108,7 +110,8 @@ export default function AdminLogin() {
                     placeholder="Masukkan kode rahasia dari admin utama"
                   />
                   <p className="text-xs text-muted-foreground">
-                    Wajib. Hanya warga & pengurus yang menerima kode dari admin utama yang dapat mendaftar.
+                    Wajib. Hanya warga & pengurus yang menerima kode dari admin utama yang dapat
+                    mendaftar.
                   </p>
                 </div>
               </>
@@ -137,19 +140,33 @@ export default function AdminLogin() {
               />
             </div>
             {error && (
-              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>
+              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {error}
+              </p>
             )}
-            <Button type="submit" disabled={busy} className="w-full bg-forest hover:bg-forest-light">
+            <Button
+              type="submit"
+              disabled={busy}
+              className="w-full bg-forest hover:bg-forest-light"
+            >
               {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {mode === "login" ? "Masuk" : "Daftar"}
             </Button>
             <div className="text-center text-sm">
               {mode === "login" ? (
-                <button type="button" onClick={() => setMode("signup")} className="text-forest hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setMode("signup")}
+                  className="text-forest hover:underline"
+                >
                   Belum punya akun? Daftar dengan Kode
                 </button>
               ) : (
-                <button type="button" onClick={() => setMode("login")} className="text-forest hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setMode("login")}
+                  className="text-forest hover:underline"
+                >
                   Sudah punya akun? Masuk
                 </button>
               )}
@@ -157,8 +174,8 @@ export default function AdminLogin() {
           </form>
 
           <p className="mt-6 rounded-md bg-muted px-3 py-2 text-center text-xs text-muted-foreground">
-            Akun pertama yang berhasil mendaftar otomatis menjadi <strong>Admin</strong>. Akun berikutnya
-            menjadi <strong>Operator</strong>.
+            Akun pertama yang berhasil mendaftar otomatis menjadi <strong>Admin</strong>. Akun
+            berikutnya menjadi <strong>Operator</strong>.
           </p>
           <p className="mt-3 text-center text-xs">
             <Link to="/" className="text-muted-foreground hover:text-forest hover:underline">
